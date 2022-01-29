@@ -1,0 +1,44 @@
+[
+    {
+        "transactionName": "interAirliningExists",
+        "transactionLabel": "A test interAirliningExists transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "createInterAirlining",
+        "transactionLabel": "A test createInterAirlining transaction",
+        "arguments": [
+            "001",
+            "some value"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "readInterAirlining",
+        "transactionLabel": "A test readInterAirlining transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "updateInterAirlining",
+        "transactionLabel": "A test updateInterAirlining transaction",
+        "arguments": [
+            "001",
+            "some other value"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "deleteInterAirlining",
+        "transactionLabel": "A test deleteInterAirlining transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    }
+]
