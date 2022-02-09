@@ -1,0 +1,428 @@
+---
+#
+# [Required]. A connection profile contains information about a set of network
+# components. It is typically used to configure gateway, allowing applications
+# interact with a network channel without worrying about the underlying
+# topology. A connection profile is normally created by an administrator who
+# understands this topology.
+#
+name: "connection.profile"
+#
+# [Optional]. Analogous to HTTP, properties with an "x-" prefix are deemed
+# "application-specific", and ignored by the gateway. For example, property
+# "x-type" with value "hlfv1" was originally used to identify a connection
+# profile for Fabric 1.x rather than 0.x.
+#
+x-type: "hlfv1"
+#
+# [Required]. A short description of the connection profile
+#
+description: "Sample connection profile for user guidance"
+#
+# [Required]. Connection profile schema version. Used by the gateway to
+# interpret these data.
+#
+version: "1.0"
+#
+# [Required]. List of organizations for all channels. At least one organization is required.
+#
+organizations:
+   #
+   # [Required]. Organizational information
+   #
+  org1:
+    #
+    # [Required]. The MSPID used in network
+    #
+    mspid: Orgorg1MSP
+    #
+    # [Required]. The peers
+    #
+    peers:
+      - peer0.org1.com
+      - peer1.org1.com
+      #
+    # [Optional]. The orderers
+    #
+    orderers:
+      - orderer0.orderer.org1.com
+      #
+    # [Optional]. Fabric-CA Certificate Authorities.
+    #
+    certificateAuthorities:
+      - ca.org1.com
+  #
+  org2:
+    #
+    # [Required]. The MSPID used in network
+    #
+    mspid: Orgorg2MSP
+    #
+    # [Required]. The peers
+    #
+    peers:
+      - peer0.org2.com
+      - peer1.org2.com
+      #
+    # [Optional]. The orderers
+    #
+    orderers:
+      - orderer0.orderer.org2.com
+      #
+    # [Optional]. Fabric-CA Certificate Authorities.
+    #
+    certificateAuthorities:
+      - ca.org2.com
+  #
+  
+# 
+# [Optional]. Orderer physical information, by orderer name
+#
+orderers:
+  #
+  # [Required]. Name of orderers
+  #
+  orderer0.orderer.org1.com:
+    #
+    # [Required]. This orderer's IP address
+    #
+    url: grpcs://orderer0-orderer-org1-greendemo-inerairlining-baas.greenrnd.com:443
+    tlsCACerts:
+      pem: |-
+        -----BEGIN CERTIFICATE-----
+        MIICVDCCAfqgAwIBAgIRAPXJvcF6qgQ6YJcGfcvo27EwCgYIKoZIzj0EAwIwdDES
+        MBAGA1UEBhMJV29ybGRXaWRlMQ8wDQYDVQQIEwZnYWxheHkxDjAMBgNVBAcTBWVh
+        cnRoMREwDwYDVQQKEwhvcmcxLmNvbTERMA8GA1UECxMIR3JlZW5SbkQxFzAVBgNV
+        BAMTDnRsc2NhLm9yZzEuY29tMB4XDTIyMDIwNjExMDMwMFoXDTMyMDIwNDExMDMw
+        MFowdDESMBAGA1UEBhMJV29ybGRXaWRlMQ8wDQYDVQQIEwZnYWxheHkxDjAMBgNV
+        BAcTBWVhcnRoMREwDwYDVQQKEwhvcmcxLmNvbTERMA8GA1UECxMIR3JlZW5SbkQx
+        FzAVBgNVBAMTDnRsc2NhLm9yZzEuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcD
+        QgAE0JzrsG/9ikkKutbEmwvRxsm1SvrfaZRYOvnC0HBonL0EFhXWUOKKMMgFLXHo
+        GJecC5EWDyCvn93jZ8rWcbfoLKNtMGswDgYDVR0PAQH/BAQDAgGmMB0GA1UdJQQW
+        MBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkGA1UdDgQi
+        BCBk8xqYgZ1vV2KfCvaq1505ahVcMZWzbmgw8UdHWFC1bDAKBggqhkjOPQQDAgNI
+        ADBFAiEAo6wcxzpKMmy1aZDclWO41VzxhyXwc66RC/RJBKM6iykCIBhMQEskZ5FE
+        gKqi8xi7ZPrKYrlD4rL42dbCfdTm7iDH
+        -----END CERTIFICATE-----
+
+
+    #
+    # [Optional]. gRPC connection properties used for communication
+    #
+    grpcOptions:
+      ssl-target-name-override: orderer0.orderer.org1.com
+      hostnameOverride: orderer0.orderer.org1.com
+  #
+  orderer0.orderer.org2.com:
+    #
+    # [Required]. This orderer's IP address
+    #
+    url: grpcs://orderer0-orderer-org2-greendemo-inerairlining-baas.greenrnd.com:443
+    tlsCACerts:
+      pem: |-
+        -----BEGIN CERTIFICATE-----
+        MIICVTCCAfqgAwIBAgIRAJjHkp42zgXVLax331OrOxEwCgYIKoZIzj0EAwIwdDES
+        MBAGA1UEBhMJV29ybGRXaWRlMQ8wDQYDVQQIEwZnYWxheHkxDjAMBgNVBAcTBWVh
+        cnRoMREwDwYDVQQKEwhvcmcyLmNvbTERMA8GA1UECxMIR3JlZW5SbkQxFzAVBgNV
+        BAMTDnRsc2NhLm9yZzIuY29tMB4XDTIyMDIwNjExMDcwMFoXDTMyMDIwNDExMDcw
+        MFowdDESMBAGA1UEBhMJV29ybGRXaWRlMQ8wDQYDVQQIEwZnYWxheHkxDjAMBgNV
+        BAcTBWVhcnRoMREwDwYDVQQKEwhvcmcyLmNvbTERMA8GA1UECxMIR3JlZW5SbkQx
+        FzAVBgNVBAMTDnRsc2NhLm9yZzIuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcD
+        QgAEg4JBK1yZdWxI2ATad71jDlhJYrH8tWw8434GR5ufxf7zMU8xPlfalIdgzeqH
+        RHUB6v6qxvDAm0uqbJi0xhIu8qNtMGswDgYDVR0PAQH/BAQDAgGmMB0GA1UdJQQW
+        MBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkGA1UdDgQi
+        BCCN1uQ86avvNH1ij+Skx1uGm5dbLce5KHKgYne8uvs1NzAKBggqhkjOPQQDAgNJ
+        ADBGAiEAvqlOH3IDpbQm4bPOieI0y8IfjtdNwXj8utK2yHQBwOcCIQDexzjyPxxP
+        mA3UTfKHSbvD+agXYA9slx4C+hZZ0OzM/g==
+        -----END CERTIFICATE-----
+
+
+    #
+    # [Optional]. gRPC connection properties used for communication
+    #
+    grpcOptions:
+      ssl-target-name-override: orderer0.orderer.org2.com
+      hostnameOverride: orderer0.orderer.org2.com
+  #
+  #
+# [Required]. Peers physical information, by peer name. At least one peer is required.
+#
+peers:
+  #
+  # [Required]. peers physical properties
+  #
+  peer0.org1.com:
+    #
+    # [Required]. Peer's IP address
+    #
+    url: grpcs://peer0-org1-greendemo-inerairlining-baas.greenrnd.com:443
+    tlsCACerts:
+      pem: |-
+        -----BEGIN CERTIFICATE-----
+        MIICVDCCAfqgAwIBAgIRAPXJvcF6qgQ6YJcGfcvo27EwCgYIKoZIzj0EAwIwdDES
+        MBAGA1UEBhMJV29ybGRXaWRlMQ8wDQYDVQQIEwZnYWxheHkxDjAMBgNVBAcTBWVh
+        cnRoMREwDwYDVQQKEwhvcmcxLmNvbTERMA8GA1UECxMIR3JlZW5SbkQxFzAVBgNV
+        BAMTDnRsc2NhLm9yZzEuY29tMB4XDTIyMDIwNjExMDMwMFoXDTMyMDIwNDExMDMw
+        MFowdDESMBAGA1UEBhMJV29ybGRXaWRlMQ8wDQYDVQQIEwZnYWxheHkxDjAMBgNV
+        BAcTBWVhcnRoMREwDwYDVQQKEwhvcmcxLmNvbTERMA8GA1UECxMIR3JlZW5SbkQx
+        FzAVBgNVBAMTDnRsc2NhLm9yZzEuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcD
+        QgAE0JzrsG/9ikkKutbEmwvRxsm1SvrfaZRYOvnC0HBonL0EFhXWUOKKMMgFLXHo
+        GJecC5EWDyCvn93jZ8rWcbfoLKNtMGswDgYDVR0PAQH/BAQDAgGmMB0GA1UdJQQW
+        MBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkGA1UdDgQi
+        BCBk8xqYgZ1vV2KfCvaq1505ahVcMZWzbmgw8UdHWFC1bDAKBggqhkjOPQQDAgNI
+        ADBFAiEAo6wcxzpKMmy1aZDclWO41VzxhyXwc66RC/RJBKM6iykCIBhMQEskZ5FE
+        gKqi8xi7ZPrKYrlD4rL42dbCfdTm7iDH
+        -----END CERTIFICATE-----
+
+
+    #
+    # [Optional]. gRPC connection properties used for communication
+    #
+    grpcOptions:
+      ssl-target-name-override: peer0.org1.com
+      hostnameOverride: peer0.org1.com
+      request-timeout: 120001
+  #
+  peer1.org1.com:
+    #
+    # [Required]. Peer's IP address
+    #
+    url: grpcs://peer1-org1-greendemo-inerairlining-baas.greenrnd.com:443
+    tlsCACerts:
+      pem: |-
+        -----BEGIN CERTIFICATE-----
+        MIICVDCCAfqgAwIBAgIRAPXJvcF6qgQ6YJcGfcvo27EwCgYIKoZIzj0EAwIwdDES
+        MBAGA1UEBhMJV29ybGRXaWRlMQ8wDQYDVQQIEwZnYWxheHkxDjAMBgNVBAcTBWVh
+        cnRoMREwDwYDVQQKEwhvcmcxLmNvbTERMA8GA1UECxMIR3JlZW5SbkQxFzAVBgNV
+        BAMTDnRsc2NhLm9yZzEuY29tMB4XDTIyMDIwNjExMDMwMFoXDTMyMDIwNDExMDMw
+        MFowdDESMBAGA1UEBhMJV29ybGRXaWRlMQ8wDQYDVQQIEwZnYWxheHkxDjAMBgNV
+        BAcTBWVhcnRoMREwDwYDVQQKEwhvcmcxLmNvbTERMA8GA1UECxMIR3JlZW5SbkQx
+        FzAVBgNVBAMTDnRsc2NhLm9yZzEuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcD
+        QgAE0JzrsG/9ikkKutbEmwvRxsm1SvrfaZRYOvnC0HBonL0EFhXWUOKKMMgFLXHo
+        GJecC5EWDyCvn93jZ8rWcbfoLKNtMGswDgYDVR0PAQH/BAQDAgGmMB0GA1UdJQQW
+        MBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkGA1UdDgQi
+        BCBk8xqYgZ1vV2KfCvaq1505ahVcMZWzbmgw8UdHWFC1bDAKBggqhkjOPQQDAgNI
+        ADBFAiEAo6wcxzpKMmy1aZDclWO41VzxhyXwc66RC/RJBKM6iykCIBhMQEskZ5FE
+        gKqi8xi7ZPrKYrlD4rL42dbCfdTm7iDH
+        -----END CERTIFICATE-----
+
+
+    #
+    # [Optional]. gRPC connection properties used for communication
+    #
+    grpcOptions:
+      ssl-target-name-override: peer1.org1.com
+      hostnameOverride: peer1.org1.com
+      request-timeout: 120001
+  #
+  peer0.org2.com:
+    #
+    # [Required]. Peer's IP address
+    #
+    url: grpcs://peer0-org2-greendemo-inerairlining-baas.greenrnd.com:443
+    tlsCACerts:
+      pem: |-
+        -----BEGIN CERTIFICATE-----
+        MIICVTCCAfqgAwIBAgIRAJjHkp42zgXVLax331OrOxEwCgYIKoZIzj0EAwIwdDES
+        MBAGA1UEBhMJV29ybGRXaWRlMQ8wDQYDVQQIEwZnYWxheHkxDjAMBgNVBAcTBWVh
+        cnRoMREwDwYDVQQKEwhvcmcyLmNvbTERMA8GA1UECxMIR3JlZW5SbkQxFzAVBgNV
+        BAMTDnRsc2NhLm9yZzIuY29tMB4XDTIyMDIwNjExMDcwMFoXDTMyMDIwNDExMDcw
+        MFowdDESMBAGA1UEBhMJV29ybGRXaWRlMQ8wDQYDVQQIEwZnYWxheHkxDjAMBgNV
+        BAcTBWVhcnRoMREwDwYDVQQKEwhvcmcyLmNvbTERMA8GA1UECxMIR3JlZW5SbkQx
+        FzAVBgNVBAMTDnRsc2NhLm9yZzIuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcD
+        QgAEg4JBK1yZdWxI2ATad71jDlhJYrH8tWw8434GR5ufxf7zMU8xPlfalIdgzeqH
+        RHUB6v6qxvDAm0uqbJi0xhIu8qNtMGswDgYDVR0PAQH/BAQDAgGmMB0GA1UdJQQW
+        MBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkGA1UdDgQi
+        BCCN1uQ86avvNH1ij+Skx1uGm5dbLce5KHKgYne8uvs1NzAKBggqhkjOPQQDAgNJ
+        ADBGAiEAvqlOH3IDpbQm4bPOieI0y8IfjtdNwXj8utK2yHQBwOcCIQDexzjyPxxP
+        mA3UTfKHSbvD+agXYA9slx4C+hZZ0OzM/g==
+        -----END CERTIFICATE-----
+
+
+    #
+    # [Optional]. gRPC connection properties used for communication
+    #
+    grpcOptions:
+      ssl-target-name-override: peer0.org2.com
+      hostnameOverride: peer0.org2.com
+      request-timeout: 120001
+  #
+  peer1.org2.com:
+    #
+    # [Required]. Peer's IP address
+    #
+    url: grpcs://peer1-org2-greendemo-inerairlining-baas.greenrnd.com:443
+    tlsCACerts:
+      pem: |-
+        -----BEGIN CERTIFICATE-----
+        MIICVTCCAfqgAwIBAgIRAJjHkp42zgXVLax331OrOxEwCgYIKoZIzj0EAwIwdDES
+        MBAGA1UEBhMJV29ybGRXaWRlMQ8wDQYDVQQIEwZnYWxheHkxDjAMBgNVBAcTBWVh
+        cnRoMREwDwYDVQQKEwhvcmcyLmNvbTERMA8GA1UECxMIR3JlZW5SbkQxFzAVBgNV
+        BAMTDnRsc2NhLm9yZzIuY29tMB4XDTIyMDIwNjExMDcwMFoXDTMyMDIwNDExMDcw
+        MFowdDESMBAGA1UEBhMJV29ybGRXaWRlMQ8wDQYDVQQIEwZnYWxheHkxDjAMBgNV
+        BAcTBWVhcnRoMREwDwYDVQQKEwhvcmcyLmNvbTERMA8GA1UECxMIR3JlZW5SbkQx
+        FzAVBgNVBAMTDnRsc2NhLm9yZzIuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcD
+        QgAEg4JBK1yZdWxI2ATad71jDlhJYrH8tWw8434GR5ufxf7zMU8xPlfalIdgzeqH
+        RHUB6v6qxvDAm0uqbJi0xhIu8qNtMGswDgYDVR0PAQH/BAQDAgGmMB0GA1UdJQQW
+        MBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkGA1UdDgQi
+        BCCN1uQ86avvNH1ij+Skx1uGm5dbLce5KHKgYne8uvs1NzAKBggqhkjOPQQDAgNJ
+        ADBGAiEAvqlOH3IDpbQm4bPOieI0y8IfjtdNwXj8utK2yHQBwOcCIQDexzjyPxxP
+        mA3UTfKHSbvD+agXYA9slx4C+hZZ0OzM/g==
+        -----END CERTIFICATE-----
+
+
+    #
+    # [Optional]. gRPC connection properties used for communication
+    #
+    grpcOptions:
+      ssl-target-name-override: peer1.org2.com
+      hostnameOverride: peer1.org2.com
+      request-timeout: 120001
+  #
+  #
+# [Optional]. Fabric-CA Certificate Authority physical information, by name.
+# This information can be used to (e.g.) enroll new users. Communication is via
+# REST, hence options relate to HTTP rather than gRPC.
+#
+certificateAuthorities:
+  #
+  # [Required]. CA
+  #
+  ca.org1.com:
+    #
+    # [Required]. CA IP address
+    #
+    url: https://ca-org1-greendemo-inerairlining-baas.greenrnd.com:443
+    tlsCACerts:
+      pem: |-
+        -----BEGIN CERTIFICATE-----
+        MIICTTCCAfOgAwIBAgIQUHEGFo92GxJT+la/zeYj6DAKBggqhkjOPQQDAjBxMRIw
+        EAYDVQQGEwlXb3JsZFdpZGUxDzANBgNVBAgTBmdhbGF4eTEOMAwGA1UEBxMFZWFy
+        dGgxETAPBgNVBAoTCG9yZzEuY29tMREwDwYDVQQLEwhHcmVlblJuRDEUMBIGA1UE
+        AxMLY2Eub3JnMS5jb20wHhcNMjIwMjA2MTEwMzAwWhcNMzIwMjA0MTEwMzAwWjBx
+        MRIwEAYDVQQGEwlXb3JsZFdpZGUxDzANBgNVBAgTBmdhbGF4eTEOMAwGA1UEBxMF
+        ZWFydGgxETAPBgNVBAoTCG9yZzEuY29tMREwDwYDVQQLEwhHcmVlblJuRDEUMBIG
+        A1UEAxMLY2Eub3JnMS5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASMb8B/
+        cylO/PeQjWWL2DGVGUX+jGCLOJH0oOZNbMgbFZLSz5lje5wDd+RrLD09V4n7lAAn
+        CBZThhjttBCWs6Y6o20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYB
+        BQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIPAgT8u2
+        zyWaDcX3i7RhJVWn73qUxMJFll+/YOHDhBmDMAoGCCqGSM49BAMCA0gAMEUCIQC5
+        RcsXjM6Gu9j+VOl96s7bQ6XwphVfeX3GS1P7dD/aqQIgEpmhYv797vFBUzbcym3/
+        tRptcDmiQWgD/jRmfOBUORo=
+        -----END CERTIFICATE-----
+
+
+    #
+    # [Optioanl]. HTTP connection properties used for communication
+    #
+    httpOptions:
+      verify: false
+    #
+    # [Optional]. Fabric-CA supports Certificate Signing Requests (CSRs). A registrar is needed to enroll new users.
+    #
+    # registrar:
+    #   - enrollId: admin
+    #     enrollSecret: adminpw
+    #
+    # [Optional]. The name of the CA.
+    #
+    caName: ca.org1.com
+  #
+  ca.org2.com:
+    #
+    # [Required]. CA IP address
+    #
+    url: https://ca-org2-greendemo-inerairlining-baas.greenrnd.com:443
+    tlsCACerts:
+      pem: |-
+        -----BEGIN CERTIFICATE-----
+        MIICTjCCAfOgAwIBAgIQJ2IRwZe5K2jIRWUJDoZgvDAKBggqhkjOPQQDAjBxMRIw
+        EAYDVQQGEwlXb3JsZFdpZGUxDzANBgNVBAgTBmdhbGF4eTEOMAwGA1UEBxMFZWFy
+        dGgxETAPBgNVBAoTCG9yZzIuY29tMREwDwYDVQQLEwhHcmVlblJuRDEUMBIGA1UE
+        AxMLY2Eub3JnMi5jb20wHhcNMjIwMjA2MTEwNzAwWhcNMzIwMjA0MTEwNzAwWjBx
+        MRIwEAYDVQQGEwlXb3JsZFdpZGUxDzANBgNVBAgTBmdhbGF4eTEOMAwGA1UEBxMF
+        ZWFydGgxETAPBgNVBAoTCG9yZzIuY29tMREwDwYDVQQLEwhHcmVlblJuRDEUMBIG
+        A1UEAxMLY2Eub3JnMi5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAATMTqqr
+        h1t/4f5jPyzzt/f91sWG5UTFn9plTz/AYPAtEz2x15yaNuILagrCF7Rir6WQMdwU
+        iJH5YXnzn4fBYnuvo20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYB
+        BQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIH8xua9r
+        nn8Rg63o1POseeCDkdcfuFZ/wSdukGCAR12aMAoGCCqGSM49BAMCA0kAMEYCIQD8
+        XDkOQIbC/1uV+ojG9oe3Xu0w6jn7X0oGB8y9eoX8lgIhAK/Do0LFWXfBGKsSkMWJ
+        9Sanx1nL3YEOwb29zgo9Dcd9
+        -----END CERTIFICATE-----
+
+
+    #
+    # [Optioanl]. HTTP connection properties used for communication
+    #
+    httpOptions:
+      verify: false
+    #
+    # [Optional]. Fabric-CA supports Certificate Signing Requests (CSRs). A registrar is needed to enroll new users.
+    #
+    # registrar:
+    #   - enrollId: admin
+    #     enrollSecret: adminpw
+    #
+    # [Optional]. The name of the CA.
+    #
+    caName: ca.org2.com
+  #
+  #
+# [Optional]. A logical description of each network channel; its peer and
+# orderer names and their roles within the channel. The physical details of
+# these components (e.g. peer IP addresses) will be specified later in the
+# profile; we focus first on the logical, and then the physical.
+#
+channels:
+  #
+  
+  interairlining:
+    #
+    # [Optional]. Channel orderers. Details of how to connect to
+    # them is specified later, under the physical "orderers:" section
+    #
+    orderers:
+    #
+    # [Required]. Orderer logical name
+    #
+      - orderer0.orderer.org1.com
+      - orderer0.orderer.org2.com
+      
+    #
+    # [Optional]. Peers and their roles
+    #
+    peers:
+    #
+    # [Required]. Peer logical name
+    #
+    # endorsingPeer:
+    # [Optional]. Is this an endorsing peer? (It must have chaincode
+    # installed.) Default: true
+    #
+    # chaincodeQuery:
+    # [Optional]. Is this peer used for query? (It must have chaincode
+    # installed.) Default: true
+    #
+    # ledgerQuery:
+    # [Optional]. Is this peer used for non-chaincode queries? All peers
+    # support these types of queries, which include queryBlock(),
+    # queryTransaction(), etc. Default: true
+    #
+    # eventSource:
+    # [Optional]. Is this peer used as an event hub? All peers can produce
+    # events. Default: true
+    #
+      peer0.org1.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      #
+      peer0.org2.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      #
+      
