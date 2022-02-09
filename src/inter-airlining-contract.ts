@@ -5,9 +5,24 @@
 import { Context, Contract, Info, Returns, Transaction } from 'fabric-contract-api';
 import { Baggage } from './baggage/baggage'
 import { BaggageService } from './baggage/baggage.service';
+import * as shim from 'fabric-shim';
 
+// ToDo Test before/afterTransaction logs using fabric samples network
+// ToDo implement and test transaction methods
 @Info({title: 'InterAirliningContract', description: 'My Smart Contract' })
 export class InterAirliningContract extends Contract {
+    public async beforeTransaction(ctx: Context): Promise<void> {
+        // IDxxx called fn: funcName, params: ...
+        const { fcn: methodName, params: methodParms } = ctx.stub.getFunctionAndParameters()
+        const id = ctx.clientIdentity.getID()
+        const mspId = ctx.clientIdentity.getMSPID()
+
+        console.log(`Function: ${methodName}, Params: ${methodParms} Called by Id: ${id} From ${mspId}`)
+    }
+
+    public async afterTransaction(ctx: Context, result: any): Promise<void> {
+        console.log(`Result: ${result}`)
+    }
 
     @Transaction(false)
     @Returns('boolean')
@@ -28,6 +43,9 @@ export class InterAirliningContract extends Contract {
     public async createBaggage(ctx: Context, baggageId: string, owner: string, weight: string, value: string) {
         const baggageService = new BaggageService(ctx)
         await baggageService.create(baggageId, owner, weight, value)
+        // events tx 
+        const eventData = { baggageId, owner, weight, value}
+        ctx.stub.setEvent('BaggageCreated', Buffer.from(JSON.stringify(eventData)))
     }
 
     @Transaction(true)
