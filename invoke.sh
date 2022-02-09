@@ -60,16 +60,16 @@ switchOrg1
 #     -c '{"function":"createBaggage","Args":["bag_001", "user_0001", "25", "100"]}'
 
 peer chaincode invoke \
+    --tls \
     -o ${ORDERER_URL} \
     --ordererTLSHostnameOverride ${ORDERER_HOST} \
-    --tls \
     --cafile ${ORDERER_TLS_CA_FILE_ADDRESS} \
-    -C ${CHANNEL_NAME} \
-    -n ${CC_NAME} \
     --peerAddresses ${PEER0_ORG1_URL} \
     --tlsRootCertFiles ${PEER0_ORG1_TLS_CA_FILE_ADDRESS} \
     --peerAddresses ${PEER0_ORG2_URL} \
     --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
+    -C ${CHANNEL_NAME} \
+    -n ${CC_NAME} \
     -c '{"function":"getBaggage","Args":["bag_001"]}'
 
 # peer chaincode invoke \
