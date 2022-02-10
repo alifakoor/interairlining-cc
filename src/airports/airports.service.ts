@@ -2,7 +2,7 @@ import { Context } from "fabric-contract-api";
 import { Airport } from "./airport";
 
 // ToDo Implement and test update && delete methods
-export class AirtposService {
+export class AirtportsService {
     private ctx: Context;
 
     constructor(ctx) {
