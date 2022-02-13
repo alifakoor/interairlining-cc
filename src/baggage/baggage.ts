@@ -8,8 +8,8 @@ import { Object, Property } from 'fabric-contract-api';
 export class Baggage {
 
     @Property()
-    public owner: string
-    public weight: number
-    public value: number
+    public owner: string;
+    public weight: number;
+    public value: number;
 
 }

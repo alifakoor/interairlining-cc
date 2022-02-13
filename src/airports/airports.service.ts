@@ -5,32 +5,64 @@ import { Airport } from "./airport";
 export class AirtportsService {
     private ctx: Context;
 
-    constructor(ctx) {
+    constructor(ctx: Context) {
         this.ctx = ctx;
     }
 
-    async exists(airportId: string) {
+    async exists(airportId: string): Promise<boolean> {
         const airportBuffer = await this.ctx.stub.getState(airportId);
-        if (airportBuffer && airportBuffer.length > 0) return true;
-        return false;
+        return (!!airportBuffer && airportBuffer.length > 0);
     }
 
-    async get(airportId: string) {
-        const airportBuffer = await this.ctx.stub.getState(airportId)
-        return JSON.parse(airportBuffer.toString())
+    async get(airportId: string): Promise<Airport> {
+        const airportBuffer = await this.ctx.stub.getState(airportId);
+        const airport = JSON.parse(airportBuffer.toString());
+        return airport;
     }
 
-    async create(airportId: string, name: string, location: string) {
+    async create(airportId: string, name: string, location: string): Promise<void> {
+        console.log(`Create New Airport ${airportId}`, name, location);
+
         if (await this.exists(airportId)) {
             throw new Error(`Airport ${airportId} already exists`);
         }
 
-        let airport = new Airport(name, location);
+        let airport = new Airport();
+        airport = {
+            name,
+            location
+        };
 
-        // db.pudState(airlineId, airline)
+        // db.pudState(airportId, airport)
 
         const airportBuffer = Buffer.from(JSON.stringify(airport));
 
         await this.ctx.stub.putState(airportId, airportBuffer);
+    }
+
+    async updateName(airportId: string, newName: string): Promise<void> {
+        console.log(`Update Name Airport: ${airportId}`, newName);
+
+        let airport = await this.get(airportId);
+        airport.name = newName;
+
+        const airportBuffer = Buffer.from(JSON.stringify(airport));
+
+        await this.ctx.stub.putState(airportId, airportBuffer);
+    }
+
+    async updateLocation(airportId: string, newLocation: string): Promise<void> {
+        console.log(`Update Location Airport: ${airportId}`, newLocation);
+
+        let airport = await this.get(airportId);
+        airport.name = newLocation;
+
+        const airportBuffer = Buffer.from(JSON.stringify(airport));
+
+        await this.ctx.stub.putState(airportId, airportBuffer);
+    }
+
+    async delete(airportId: string): Promise<void> {
+        await this.ctx.stub.deleteState(airportId);
     }
 }

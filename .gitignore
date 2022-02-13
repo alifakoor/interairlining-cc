@@ -79,3 +79,16 @@ typings/
 # Compiled TypeScript files
 dist
 
+# zip files
+*.zip
+*.tar.gz
+
+# msp folder
+msp/
+msp-old
+
+# sh files
+*.sh
+
+# text files
+*.txt
