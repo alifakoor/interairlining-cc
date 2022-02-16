@@ -51,7 +51,7 @@ export class InterAirliningContract extends Contract {
     @Transaction(false)
     public async getBaggages(
         ctx: Context,
-        field: string, 
+        field: string,
         condition: string,
         value: string
     ): Promise<Array<Baggage>> {

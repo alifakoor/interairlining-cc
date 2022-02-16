@@ -111,9 +111,9 @@ export class BaggageService {
 
         const selector: object = {};
         selector[field] = {};
-        selector[field][condition] = value;
+        selector[field][condition] = +value;
 
-        const query: string = JSON.stringify({selector});
+        const query: string = JSON.stringify({"selector": selector});
 
         const baggageBuffer = await this.ctx.stub.getQueryResult(query);
         const list: Array<Baggage> = JSON.parse(baggageBuffer.toString());

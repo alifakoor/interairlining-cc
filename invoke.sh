@@ -197,4 +197,4 @@ peer chaincode invoke \
     --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
     -C ${CHANNEL_NAME} \
     -n ${CC_NAME} \
-    -c '{"function":"getBaggages","Args":["weigth", "$gt", "25"]}'
+    -c '{"function":"getBaggages","Args":["weight", "$gt", "25"]}'
