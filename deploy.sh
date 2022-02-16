@@ -5,7 +5,7 @@ do
    esac
 done
 
-CHANNEL_NAME="demo" 
+CHANNEL_NAME="interairlining" 
 CC_NAME="interairlining"
 CC_PACKAGE_NAME="${CC_NAME}_v${CC_VERSION}.tar.gz"
 CC_SRC_PATH="./"
@@ -16,7 +16,7 @@ ORDERER_URL="localhost:7050"
 PEER0_ORG1_URL="localhost:7051"
 PEER0_ORG2_URL="localhost:9051"
 
-CRYPTO_BASE="/home/hossein/workspace/hyperledger/fabric-samples/test-network"
+CRYPTO_BASE="/home/ali/fabric-samples/test-network"
 ORDERER_TLS_CA_FILE_ADDRESS=${CRYPTO_BASE}"/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem"
 PEER0_ORG1_TLS_CA_FILE_ADDRESS=${CRYPTO_BASE}"/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
 PEER0_ORG2_TLS_CA_FILE_ADDRESS=${CRYPTO_BASE}"/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt"
@@ -24,8 +24,8 @@ ORG1_ADMIN_MSP_PATH=${CRYPTO_BASE}/organizations/peerOrganizations/org1.example.
 ORG2_ADMIN_MSP_PATH=${CRYPTO_BASE}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
 
 
-export PATH=/home/hossein/workspace/hyperledger/fabric-samples/bin:$PATH
-export FABRIC_CFG_PATH=/home/hossein/workspace/hyperledger/fabric-samples/config
+export PATH=/home/ali/fabric-samples/bin:$PATH
+export FABRIC_CFG_PATH=/home/ali/fabric-samples/config
 
 switchOrg1() {
     export CORE_PEER_TLS_ENABLED=true

@@ -5,7 +5,7 @@ do
    esac
 done
 
-CHANNEL_NAME="demo" 
+CHANNEL_NAME="interairlining" 
 CC_NAME="interairlining"
 CC_PACKAGE_NAME="${CC_NAME}_v${CC_VERSION}.tar.gz"
 CC_SRC_PATH="./"
@@ -16,7 +16,7 @@ ORDERER_URL="localhost:7050"
 PEER0_ORG1_URL="localhost:7051"
 PEER0_ORG2_URL="localhost:9051"
 
-FABRIC_BASE=/home/hossein/workspace/hyperledger/fabric-samples
+FABRIC_BASE=/home/ali/fabric-samples
 CRYPTO_BASE=${FABRIC_BASE}/test-network
 ORDERER_TLS_CA_FILE_ADDRESS=${CRYPTO_BASE}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 PEER0_ORG1_TLS_CA_FILE_ADDRESS=${CRYPTO_BASE}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
@@ -46,31 +46,130 @@ switchOrg2() {
 
 switchOrg1
 
+# create baggage
 # peer chaincode invoke \
 #     -o ${ORDERER_URL} \
 #     --ordererTLSHostnameOverride ${ORDERER_HOST} \
 #     --tls \
 #     --cafile ${ORDERER_TLS_CA_FILE_ADDRESS} \
-#     -C ${CHANNEL_NAME} \
-#     -n ${CC_NAME} \
 #     --peerAddresses ${PEER0_ORG1_URL} \
 #     --tlsRootCertFiles ${PEER0_ORG1_TLS_CA_FILE_ADDRESS} \
 #     --peerAddresses ${PEER0_ORG2_URL} \
 #     --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
+#     -C ${CHANNEL_NAME} \
+#     -n ${CC_NAME} \
 #     -c '{"function":"createBaggage","Args":["bag_001", "user_0001", "25", "100"]}'
 
-peer chaincode invoke \
-    --tls \
-    -o ${ORDERER_URL} \
-    --ordererTLSHostnameOverride ${ORDERER_HOST} \
-    --cafile ${ORDERER_TLS_CA_FILE_ADDRESS} \
-    --peerAddresses ${PEER0_ORG1_URL} \
-    --tlsRootCertFiles ${PEER0_ORG1_TLS_CA_FILE_ADDRESS} \
-    --peerAddresses ${PEER0_ORG2_URL} \
-    --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
-    -C ${CHANNEL_NAME} \
-    -n ${CC_NAME} \
-    -c '{"function":"getBaggage","Args":["bag_001"]}'
+# peer chaincode invoke \
+#     -o ${ORDERER_URL} \
+#     --ordererTLSHostnameOverride ${ORDERER_HOST} \
+#     --tls \
+#     --cafile ${ORDERER_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG1_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG1_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG2_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
+#     -C ${CHANNEL_NAME} \
+#     -n ${CC_NAME} \
+#     -c '{"function":"createBaggage","Args":["bag_002", "user_0001", "30", "125"]}'
+
+# peer chaincode invoke \
+#     -o ${ORDERER_URL} \
+#     --ordererTLSHostnameOverride ${ORDERER_HOST} \
+#     --tls \
+#     --cafile ${ORDERER_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG1_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG1_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG2_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
+#     -C ${CHANNEL_NAME} \
+#     -n ${CC_NAME} \
+#     -c '{"function":"createBaggage","Args":["bag_003", "user_0001", "21", "86"]}'
+
+# peer chaincode invoke \
+#     -o ${ORDERER_URL} \
+#     --ordererTLSHostnameOverride ${ORDERER_HOST} \
+#     --tls \
+#     --cafile ${ORDERER_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG1_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG1_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG2_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
+#     -C ${CHANNEL_NAME} \
+#     -n ${CC_NAME} \
+#     -c '{"function":"createBaggage","Args":["bag_004", "user_0002", "24", "98"]}'
+
+# # create source airport
+# peer chaincode invoke \
+#     -o ${ORDERER_URL} \
+#     --ordererTLSHostnameOverride ${ORDERER_HOST} \
+#     --tls \
+#     --cafile ${ORDERER_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG1_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG1_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG2_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
+#     -C ${CHANNEL_NAME} \
+#     -n ${CC_NAME} \
+#     -c '{"function":"createAirport","Args":["ap_0001", "LA Airport", "Los Angeles"]}'
+
+# # create destination airport
+# peer chaincode invoke \
+#     -o ${ORDERER_URL} \
+#     --ordererTLSHostnameOverride ${ORDERER_HOST} \
+#     --tls \
+#     --cafile ${ORDERER_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG1_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG1_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG2_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
+#     -C ${CHANNEL_NAME} \
+#     -n ${CC_NAME} \
+#     -c '{"function":"createAirport","Args":["ap_0002", "JFK", "New York"]}'
+
+# # create airline
+# peer chaincode invoke \
+#     -o ${ORDERER_URL} \
+#     --ordererTLSHostnameOverride ${ORDERER_HOST} \
+#     --tls \
+#     --cafile ${ORDERER_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG1_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG1_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG2_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
+#     -C ${CHANNEL_NAME} \
+#     -n ${CC_NAME} \
+#     -c '{"function":"createAirline","Args":["al_0001", "Qatar Airways", "Qatar"]}'
+
+# # create order
+# peer chaincode invoke \
+#     -o ${ORDERER_URL} \
+#     --ordererTLSHostnameOverride ${ORDERER_HOST} \
+#     --tls \
+#     --cafile ${ORDERER_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG1_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG1_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG2_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
+#     -C ${CHANNEL_NAME} \
+#     -n ${CC_NAME} \
+#     -c '{"function":"createOrder","Args":["OD_00001", "bag_001", "ap_0001", "ap_0002", "al_0001", "ZW719"]}'
+
+# # update order status - agent deliver bg_001 to ap_0001
+# peer chaincode invoke \
+#     -o ${ORDERER_URL} \
+#     --ordererTLSHostnameOverride ${ORDERER_HOST} \
+#     --tls \
+#     --cafile ${ORDERER_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG1_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG1_TLS_CA_FILE_ADDRESS} \
+#     --peerAddresses ${PEER0_ORG2_URL} \
+#     --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
+#     -C ${CHANNEL_NAME} \
+#     -n ${CC_NAME} \
+#     -c '{"function":"claimDelivery","Args":["OD_00001", "ag_001", "ap_0001"]}'
+
+
 
 # peer chaincode invoke \
 #     -o ${ORDERER_URL} \
@@ -85,15 +184,17 @@ peer chaincode invoke \
 #     --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
 #     -c '{"function":"updateBaggageOwner","Args":["bag_001", "user_0002"]}'
 
-# peer chaincode invoke \
-#     -o ${ORDERER_URL} \
-#     --ordererTLSHostnameOverride ${ORDERER_HOST} \
-#     --tls \
-#     --cafile ${ORDERER_TLS_CA_FILE_ADDRESS} \
-#     -C ${CHANNEL_NAME} \
-#     -n ${CC_NAME} \
-#     --peerAddresses ${PEER0_ORG1_URL} \
-#     --tlsRootCertFiles ${PEER0_ORG1_TLS_CA_FILE_ADDRESS} \
-#     --peerAddresses ${PEER0_ORG2_URL} \
-#     --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
-#     -c '{"function":"getBaggage","Args":["bag_001"]}'
+
+# get list of baggages with filter
+peer chaincode invoke \
+    -o ${ORDERER_URL} \
+    --ordererTLSHostnameOverride ${ORDERER_HOST} \
+    --tls \
+    --cafile ${ORDERER_TLS_CA_FILE_ADDRESS} \
+    --peerAddresses ${PEER0_ORG1_URL} \
+    --tlsRootCertFiles ${PEER0_ORG1_TLS_CA_FILE_ADDRESS} \
+    --peerAddresses ${PEER0_ORG2_URL} \
+    --tlsRootCertFiles ${PEER0_ORG2_TLS_CA_FILE_ADDRESS} \
+    -C ${CHANNEL_NAME} \
+    -n ${CC_NAME} \
+    -c '{"function":"getBaggages","Args":["weigth", "$gt", "25"]}'

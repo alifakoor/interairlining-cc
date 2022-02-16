@@ -12,6 +12,8 @@ import { OrderService } from "./order/order.service";
 
 // ToDo Test before/afterTransaction logs using fabric samples network
 // ToDo implement and test transaction methods
+// ToDo get baggage by query (value) (this.ctx.stub.getQueryResult)
+// ToDo Complete Test of procedure
 @Info({ title: "InterAirliningContract", description: "My Smart Contract" })
 export class InterAirliningContract extends Contract {
     
@@ -44,6 +46,20 @@ export class InterAirliningContract extends Contract {
         const baggageService = new BaggageService(ctx);
         const baggage = await baggageService.get(baggageId);
         return baggage;
+    }
+
+    @Transaction(false)
+    public async getBaggages(
+        ctx: Context,
+        field: string, 
+        condition: string,
+        value: string
+    ): Promise<Array<Baggage>> {
+
+        const baggageService = new BaggageService(ctx);
+        const result = await baggageService.getWithQuery(field, condition, value);
+
+        return result;
     }
 
     @Transaction(true)
@@ -177,12 +193,10 @@ export class InterAirliningContract extends Contract {
 
         const orderService = new OrderService(ctx);
         // check if order exist
-        const existedOrder = await orderService.exists(orderId);
-        if(!existedOrder) {
+        let order: Order = await orderService.get(orderId);
+        if(!order) {
             throw new Error(`Order ${orderId} does not exist.`);
         }
-
-        let order = await orderService.get(orderId);
 
         const airportService = new AirtportsService(ctx);
         const airlineService = new AirlinesService(ctx);
@@ -191,26 +205,34 @@ export class InterAirliningContract extends Contract {
         // src -> Agent
         // dsc -> srcAirport
         if(order.status === OrderStatusEnum.Created) {
-            const existedAirport = await airportService.exists(dst);
-            if(!existedAirport) {
-                throw new Error(`Source Airport ${dst} does not exist.`)
+            // verify dst exists among airports - optional
+            // const existedAirport = await airportService.exists(dst);
+            // if(!existedAirport) {
+            //     throw new Error(`Source Airport ${dst} does not exist.`);
+            // }
+
+            // dst is equal to order.srcAirportId - required
+            if(order.srcAirportId !== dst) {
+                throw new Error(`Invalid destination: ${dst}`);
             }
 
+            // update order status
             await orderService.updateStatus(orderId, OrderStatusEnum.ClaimedDeliveryToSrcAirport);
         }
         
         // 4a- srcAirport Delivers baggage to Airline
         // src -> srcAirport
         // dst -> Airline
-        if(order.status === OrderStatusEnum.ClaimedDeliveryToSrcAirport) {
-            const existedSrcAirport = await airportService.exists(src);
-            if(!existedSrcAirport) {
-                throw new Error(`srcAirport ${src} does not exist.`)
+        if(order.status === OrderStatusEnum.ConfirmedDeliveryToSrcAirport) {
+            
+            // src is equal to order.srcAirport
+            if(order.srcAirportId !== src) {
+                throw new Error(`Invalid source: ${src}`)
             }
 
-            const existedAirline = await airlineService.exists(dst);
-            if(!existedAirline) {
-                throw new Error(`Airline ${dst} does not exist.`)
+            // dst is equal to order.Airline
+            if(order.airlineId !== dst) {
+                throw new Error(`Invalid destination: ${dst}`);
             }
 
             await orderService.updateStatus(orderId, OrderStatusEnum.ClaimedDeliveryToAirline);
@@ -219,15 +241,16 @@ export class InterAirliningContract extends Contract {
         // 5a- Airline Delivers baggage to dstAirport
         // src -> Airline
         // dst -> dstAirport
-        if(order.status === OrderStatusEnum.ClaimedDeliveryToAirline) {
-            const existedAirline = await airlineService.exists(src);
-            if(!existedAirline) {
-                throw new Error(`Airline ${src} does not exist.`)
+        if(order.status === OrderStatusEnum.ConfirmedDeliveryToAirline) {
+            
+            // src is equal to order.airline
+            if(order.airlineId !== src) {
+                throw new Error(`Invalid source: ${src}`)
             }
 
-            const existedDstAirport = await airportService.exists(dst);
-            if(!existedDstAirport) {
-                throw new Error(`dstAirport ${src} does not exist.`)
+            // dst is equal to order.dstAirport
+            if(order.dstAirportId !== dst) {
+                throw new Error(`Invalid destination: ${dst}`);
             }
 
             await orderService.updateStatus(orderId, OrderStatusEnum.ClaimedDeliveryToDstAirport);
@@ -236,10 +259,11 @@ export class InterAirliningContract extends Contract {
         // 6a- dstAirport Delivers to endpoint
         // src -> dstAirport
         // dst -> endpoint
-        if(order.status === OrderStatusEnum.ClaimedDeliveryToDstAirport) {
-            const existedAirport = await airportService.exists(src);
-            if(!existedAirport) {
-                throw new Error(`Destination Airport ${src} does not exist.`)
+        if(order.status === OrderStatusEnum.ConfirmedDeliveryToDstAirport) {
+            
+            // src is equal to order.dstAirport
+            if(order.dstAirportId !== src) {
+                throw new Error(`Invalid source: ${src}`)
             }
 
             await orderService.updateStatus(orderId, OrderStatusEnum.ClaimedDeliveryToEndpoint);
@@ -248,15 +272,17 @@ export class InterAirliningContract extends Contract {
 
     // ToDo Implement confirmDelivery
     @Transaction(true)
-    public async confirmDelivery(ctx: Context, orderId: string): Promise<void> {
+    public async confirmDelivery(ctx: Context, orderId: string, baggageId: string, src: string, dst: string): Promise<void> {
         const orderService = new OrderService(ctx);
         // check if order exist
-        const existedOrder = await orderService.exists(orderId);
-        if(!existedOrder) {
+        let order = await orderService.get(orderId);
+        if(!order) {
             throw new Error(`Order ${orderId} does not exist.`);
         }
 
-        let order = await orderService.get(orderId);
+        if(order.baggageId !== baggageId) {
+            throw new Error(`Invalid Baggage: ${baggageId}`);
+        }
 
         const airportService = new AirtportsService(ctx);
         const airlineService = new AirlinesService(ctx);
@@ -264,24 +290,58 @@ export class InterAirliningContract extends Contract {
         // 3b- srcAirport Confirms Delivery
         // confirmer -> srcAirport
         if(order.status === OrderStatusEnum.ClaimedDeliveryToSrcAirport) {
+            
+            // dst is equal to order.srcAirportId - required
+            if(order.srcAirportId !== dst) {
+                throw new Error(`Invalid destination: ${dst}`);
+            }
+
             await orderService.updateStatus(orderId, OrderStatusEnum.ConfirmedDeliveryToSrcAirport);
         }
 
         // 4b- Airline Confirms Delivery
         // confirmer -> Airline
         if(order.status === OrderStatusEnum.ClaimedDeliveryToAirline) {
+
+            // src is equal to order.srcAirport
+            if(order.srcAirportId !== src) {
+                throw new Error(`Invalid source: ${src}`)
+            }
+
+            // dst is equal to order.Airline
+            if(order.airlineId !== dst) {
+                throw new Error(`Invalid destination: ${dst}`);
+            }
+
             await orderService.updateStatus(orderId, OrderStatusEnum.ConfirmedDeliveryToAirline);
         }
 
         // 5b- dstAirport Confirms Delivery
         // confirmer -> dstAirport
         if(order.status === OrderStatusEnum.ClaimedDeliveryToDstAirport) {
+
+            // src is equal to order.airline
+            if(order.airlineId !== src) {
+                throw new Error(`Invalid source: ${src}`)
+            }
+
+            // dst is equal to order.dstAirport
+            if(order.dstAirportId !== dst) {
+                throw new Error(`Invalid destination: ${dst}`);
+            }
+
             await orderService.updateStatus(orderId, OrderStatusEnum.ConfirmedDeliveryToDstAirport);
         }
 
         // 6b- endpoint Confirms Delivery
         // confirmer -> Airline
         if(order.status === OrderStatusEnum.ClaimedDeliveryToEndpoint) {
+            
+            // src is equal to order.dstAirport
+            if(order.dstAirportId !== src) {
+                throw new Error(`Invalid source: ${src}`)
+            }
+
             await orderService.updateStatus(orderId, OrderStatusEnum.ConfirmedDeliveryToEndpoint);
         }
     }

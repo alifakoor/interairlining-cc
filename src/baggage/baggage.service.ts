@@ -4,6 +4,13 @@ import { Baggage } from "./baggage";
 export class BaggageService {
     private ctx: Context;
 
+    private queryConditions: object = {
+        greaterThan: "$gt",
+        greaterThanEqual: "$gte",
+        lessThan: "$lt",
+        lessThanEqual: "$lte"
+    }
+
     constructor(ctx: Context) {
         this.ctx = ctx;
     }
@@ -82,5 +89,35 @@ export class BaggageService {
 
     async delete(baggageId: string): Promise<void> {
         await this.ctx.stub.deleteState(baggageId);
+    }
+
+    async getWithQuery(
+        field: string, 
+        condition: string,
+        value: string
+    ): Promise<Array<Baggage>> {
+
+        // const selectorObj: object = JSON.parse(selector);
+        // const fieldsArr: Array<string> = fields.split(",");
+        // const sortObj: object = JSON.parse(sort);
+        
+        // const query: object = {
+        //     selector: selectorObj,
+        //     fields: fieldsArr
+        //     // sort: sortObj,
+        //     // limit: +limit,
+        //     // skip: +skip
+        // };
+
+        const selector: object = {};
+        selector[field] = {};
+        selector[field][condition] = value;
+
+        const query: string = JSON.stringify({selector});
+
+        const baggageBuffer = await this.ctx.stub.getQueryResult(query);
+        const list: Array<Baggage> = JSON.parse(baggageBuffer.toString());
+
+        return list;
     }
 }
